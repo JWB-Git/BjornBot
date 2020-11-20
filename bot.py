@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 class Bjorn(commands.Bot):
 
     def __init__(self):
-        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjorn "))
+        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "))
 
         # Add cogs here
         self.add_cog(basic_cog.Basic())
