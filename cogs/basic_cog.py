@@ -5,5 +5,5 @@ class Basic(commands.Cog):
 
     @commands.command(name='hello')
     async def hello(self, ctx):
-        await ctx.send("Hello World!")
+        await ctx.send(f"Hello {ctx.author.mention}")
 
