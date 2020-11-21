@@ -8,7 +8,7 @@ from math import floor
 
 class Basic(commands.Cog):
 
-    @commands.command(name='hello')
+    @commands.command(name='hello', aliases=['hi', 'hej', 'hei', 'halla' 'hallo', 'whyaye', 'why'])
     async def hello(self, ctx):
         await ctx.send(f"Hello {ctx.author.mention}")
 
@@ -39,5 +39,14 @@ class Basic(commands.Cog):
         embed.add_field(name="Who's running it?", value="NUSSAGG and DUSAGG", inline=False)
         embed.add_field(name="What makes it so special?", value="It's the first SSAGO Rally in the North East for 21 Years!", inline=False)
         embed.set_footer(text="For more information about the Rally, click on 'Viking Rally 2021'", icon_url="https://scontent-lht6-1.xx.fbcdn.net/v/t1.0-9/p960x960/126024485_189553636113350_3374549951797900365_o.png?_nc_cat=106&ccb=2&_nc_sid=85a577&_nc_ohc=AHTAX0o4YIAAX-xICmR&_nc_ht=scontent-lht6-1.xx&oh=708c1ec3789fb4ee98886e9d6cc0a998&oe=5FDC9301")
+
+        await ctx.send(embed=embed)
+
+    @commands.command(name='dev', aliases=['devs', 'development', 'git', 'github', 'code'])
+    async def dev(self, ctx):
+        embed = Embed(title="BjornBot", color=Color.purple(), url="https://github.com/JWB-Git/BjornBot")
+
+        embed.add_field(name="Developed by", value="Jack Burgess and Tim Rodaway", inline=False)
+        embed.add_field(name="Repo", value="Click on link in the title!", inline=False)
 
         await ctx.send(embed=embed)
