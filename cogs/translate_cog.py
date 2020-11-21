@@ -17,7 +17,7 @@ class Translate(commands.Cog):
 
         embed = Embed(title=chosen_word['word'], color=Color.purple())
 
-        embed.add_field(name="Meaning", value=chosen_word['word'], inline=False)
+        embed.add_field(name="Meaning", value=chosen_word['definition'], inline=False)
         embed.add_field(name="Type", value=chosen_word['type'] if chosen_word['type'] != "" else "N/A", inline=True)
         embed.add_field(name="Gender", value=chosen_word['gender'] if chosen_word['gender'] != "" else "None", inline=True)
         embed.add_field(name="Branch", value=chosen_word['branch'], inline=False)
