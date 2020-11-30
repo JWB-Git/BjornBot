@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 
-from cogs import basic_cog, catch_cog
+from cogs import basic_cog, catch_cog, famous_vikings_cog, meme_cog
 
 import os
 from dotenv import load_dotenv
@@ -16,6 +16,8 @@ class Bjorn(commands.Bot):
         # Add cogs here
         self.add_cog(basic_cog.Basic())
         self.add_cog(catch_cog.Catch())
+        self.add_cog(famous_vikings_cog.FamousVikings())
+        self.add_cog(meme_cog.Meme(self))
 
 
 load_dotenv()
