@@ -13,7 +13,7 @@ class FamousVikings(commands.Cog):
                 vikings = json.load(file)
             viking = vikings[str(random.choice(range(len(vikings))))]
             embed = discord.Embed(title=viking["name"], description="A famous Viking",
-                                  colour=discord.Colour.from_rgb(44, 4, 67))
+                                  colour=discord.Colour.from_rgb(44, 4, 67), url=viking['wiki'])
             if viking["image"] != "":
                 embed.set_thumbnail(url=viking["image"])
             embed.add_field(name="About", value=viking["info"], inline=False)
