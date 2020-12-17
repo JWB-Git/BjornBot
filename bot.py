@@ -24,7 +24,7 @@ class Bjorn(commands.Bot):
     def __init__(self):
         commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True)
 
-        #Set up Firebase Database
+        # Set up Firebase Database
         config = {
             'apiKey': os.getenv('FIREBASE_API_KEY'),
             'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN'),
@@ -42,7 +42,7 @@ class Bjorn(commands.Bot):
     # Error Handling (In the loosest sense of the word). Errors get sent to log
     async def on_command_error(self, ctx, exception):
         if isinstance(exception, commands.errors.MissingRequiredArgument):  # Specific error capture for missing argument requirement
-            await ctx.send('Ah Nej! You\'ve missed a required argument for this command! This command will have its own help argument, so type it again with help after it!')
+            await ctx.send('Å nei!, You\'ve missed a required argument for this command! This command will have its own help argument, so type it again with help after it!')
         else:
             await ctx.send('Å nei!, somethings gone wrong here. I\'ve sent more info about what\'s gone wrong to my developers so they can work this out')
             logger.error(exception)
