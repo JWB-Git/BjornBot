@@ -8,12 +8,16 @@ import logging
 
 import pyrebase
 
+
 # Set up error logger
 logger = logging.getLogger('Discord')
 logger.setLevel(logging.ERROR)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
+
+load_dotenv()
+
 
 class Bjorn(commands.Bot):
 
@@ -22,10 +26,10 @@ class Bjorn(commands.Bot):
 
         #Set up Firebase Database
         config = {
-            'apiKey': "AIzaSyD3o48rC-dUgSwGlO9vmgy9fJnZ1gVii2E",
-            'authDomain': "bjornbot-21a44.firebaseapp.com",
-            'storageBucket': "bjornbot-21a44.appspot.com",
-            'databaseURL': 'https://bjornbot-21a44-default-rtdb.europe-west1.firebasedatabase.app/'
+            'apiKey': os.getenv('FIREBASE_API_KEY'),
+            'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN'),
+            'storageBucket': os.getenv('FIREBASE_STORAGE_BUCKET'),
+            'databaseURL': os.getenv('FIREBASE_DATABASE_URL')
         }
         firebase = pyrebase.initialize_app(config)
         database = firebase.database()
@@ -44,7 +48,6 @@ class Bjorn(commands.Bot):
             logger.error(exception)
 
 # Load discord token from .env file
-load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # Start Bjorn Running
