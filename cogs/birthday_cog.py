@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Color
+from discord import Embed, Color, utils
 
 from datetime import datetime
 
@@ -10,12 +10,14 @@ class Birthday(commands.Cog):
     def __init__(self, database):
         self.database = database
 
-    @commands.command(name='birthday')
-    async def birthday(self, ctx, case):
+    @commands.command(name='birthday', aliases=['birthdays'])
+    async def birthday(self, ctx, case, *info):
         if case == 'help':
             await self.help(ctx)
         elif case == 'read':
             await self.read(ctx)
+        elif case == 'add':
+            await self.add(ctx, info)
 
     async def help(self, ctx):
         pass
@@ -26,6 +28,33 @@ class Birthday(commands.Cog):
         for birthday in birthdays.each():
             embed = generate_embed(birthday)
             await ctx.send(embed=embed)
+
+    async def add(self, ctx, info):
+        role = utils.get(ctx.guild.roles, name="Viking Rally")
+
+        if role in ctx.author.roles:  # If user is part of the viking rally team
+            if len(info) == 3:
+                name = str(info[0]).replace('-', ' ')
+                birthdate = info[1]
+                description = str(info[2]).replace('-', ' ')
+
+                self.add_birthday(name, birthdate, description)
+
+                await ctx.send(f'{name}\'s Birthday added successfully')
+            else:
+                await ctx.send(f'Å nei! I Expected 3 arguments (Name, Birthdate & Description) and got {len(info)}. For the name and description, use - inbetween letters rather than spaces and the birthdate must be in dd/mm/yyyy format! ')
+
+        else:
+            await ctx.send('Å nei! Your not a member of the Viking Rally team so you can\'t use this command. Sorry!')
+
+    # Function to add birthday to database
+    def add_birthday(self, name, birthdate, description):
+        data = {
+            'birthday': birthdate,
+            'description': description
+        }
+
+        self.database.child('birthdays').child(name).set(data)
 
 
 # Useful function for generating birthday embeds
