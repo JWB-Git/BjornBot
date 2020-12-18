@@ -1,3 +1,5 @@
+# Cog currently disabled in bot - Redesign needed if to function fully
+
 from discord.ext import commands
 from discord import Embed, Color, utils
 

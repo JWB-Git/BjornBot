@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 import logging
 
-import pyrebase
+# import pyrebase  # Currently disabled as not needed due to disabled birthday feature
 
 
 # Set up error logger
@@ -25,19 +25,20 @@ class Bjorn(commands.Bot):
         commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True)
 
         # Set up Firebase Database
-        config = {
-            'apiKey': os.getenv('FIREBASE_API_KEY'),
-            'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN'),
-            'storageBucket': os.getenv('FIREBASE_STORAGE_BUCKET'),
-            'databaseURL': os.getenv('FIREBASE_DATABASE_URL')
-        }
-        firebase = pyrebase.initialize_app(config)
-        database = firebase.database()
+        # Currently disabled as not needed due to disabled birthday feature
+        # config = {
+        #     'apiKey': os.getenv('FIREBASE_API_KEY'),
+        #     'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN'),
+        #     'storageBucket': os.getenv('FIREBASE_STORAGE_BUCKET'),
+        #     'databaseURL': os.getenv('FIREBASE_DATABASE_URL')
+        # }
+        # firebase = pyrebase.initialize_app(config)
+        # database = firebase.database()
 
         # Add cogs here
         self.add_cog(basic_cog.Basic())
         self.add_cog(translate_cog.Translate())
-        self.add_cog(birthday_cog.Birthday(database))
+        # self.add_cog(birthday_cog.Birthday(database))  # Currently Disabled due to poor design
 
     # Error Handling (In the loosest sense of the word). Errors get sent to log
     async def on_command_error(self, ctx, exception):
