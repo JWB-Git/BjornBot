@@ -9,5 +9,6 @@ Old Norse JSON provided by https://github.com/stscoundrel/ordbok-json
 - discord.py~=1.5.1
 - python-dotenv~=0.15.0
 - aiohttp~=3.6.3
+- praw~=7.1.0
 - pyrebase4~=4.4.1
 - discord-pretty-help~=1.2.0
