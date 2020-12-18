@@ -1,11 +1,9 @@
 from discord.ext import commands
 import discord
 
-from cogs import basic_cog, catch_cog, famous_vikings_cog, meme_cog
+from cogs import basic_cog, catch_cog, famous_vikings_cog, meme_cog, translate_cog, birthday_cog
 from discord import Color
 from pretty_help import PrettyHelp
-
-from cogs import basic_cog, translate_cog, birthday_cog
 
 import os
 from dotenv import load_dotenv
