@@ -1,4 +1,7 @@
 from discord.ext import commands
+import discord
+
+from cogs import basic_cog, catch_cog, famous_vikings_cog, meme_cog
 from discord import Color
 from pretty_help import PrettyHelp
 
@@ -24,7 +27,8 @@ load_dotenv()
 class Bjorn(commands.Bot):
 
     def __init__(self):
-        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True, help_command=PrettyHelp(color=Color.purple(), show_index=False))
+        intents = discord.Intents.all()
+        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True, help_command=PrettyHelp(color=Color.purple(), show_index=False), intents=intents)
 
         # Set up Firebase Database
         # Currently disabled as not needed due to disabled birthday feature
@@ -40,6 +44,9 @@ class Bjorn(commands.Bot):
         # Add cogs here
         self.add_cog(basic_cog.Basic())
         self.add_cog(translate_cog.Translate())
+        self.add_cog(catch_cog.Catch())
+        self.add_cog(famous_vikings_cog.FamousVikings())
+        self.add_cog(meme_cog.Meme(self))
         # self.add_cog(birthday_cog.Birthday(database))  # Currently Disabled due to poor design
 
     # Error Handling (In the loosest sense of the word). Errors get sent to log
