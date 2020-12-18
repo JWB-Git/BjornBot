@@ -6,7 +6,8 @@ import random
 
 class FamousVikings(commands.Cog):
 
-    @commands.command(name="famous")
+    @commands.command(name="famous", aliases=["famousviking, viking"], breif="Find out about a famous Viking",
+                      help="I'll post about a famous Viking, including a short bio and image")
     async def famous(self, ctx):
         try:
             with open('data/famous_vikings.json', 'r', encoding="utf-8") as file:
