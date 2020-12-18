@@ -10,11 +10,11 @@ from random import randint
 
 class Basic(commands.Cog):
 
-    @commands.command(name='hello', aliases=['hi', 'hej', 'hei', 'halla' 'hallo', 'whyaye', 'why'])
+    @commands.command(name='hello', aliases=['hi', 'hej', 'hei', 'halla' 'hallo', 'whyaye', 'why'], brief="Say Hello to Bjorn", help="Say Hello to Bjorn")
     async def hello(self, ctx):
         await ctx.send(f"Hello {ctx.author.mention}")
 
-    @commands.command(name='countdown')
+    @commands.command(name='countdown', brief="See how long until Viking Rally", help="See how long until Viking Rally. If you put weeks, hours, minutes or seconds as a parameter for the command, you can see how long it is in that time format!")
     async def countdown(self, ctx, unit='days'):
         viking_date = datetime(2021, 11, 19, 18, 00, 00)
         current_date = datetime.now()
@@ -32,7 +32,7 @@ class Basic(commands.Cog):
         elif unit == "seconds":
             await ctx.send(f"There are {floor(countdown.total_seconds())} more seconds(s) until Viking Rally 2021")
 
-    @commands.command(name='info', aliases=['information', 'rally'])
+    @commands.command(name='info', aliases=['information', 'rally'], brief="Learn more about Viking Rally 2021", help="Learn more about Viking Rally 2021")
     async def info(self, ctx):
         embed = Embed(title="Viking Rally 2021", color=Color.purple(), url="https://viking-rally.ssago.org")
         embed.set_image(
@@ -47,7 +47,7 @@ class Basic(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name='dev', aliases=['devs', 'development', 'git', 'github', 'code'])
+    @commands.command(name='dev', aliases=['devs', 'development', 'git', 'github', 'code'], brief="See my developers and code!", help="See my developers and code!")
     async def dev(self, ctx):
         embed = Embed(title="BjornBot", color=Color.purple(), url="https://github.com/JWB-Git/BjornBot")
 

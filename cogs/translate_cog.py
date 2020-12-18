@@ -7,7 +7,7 @@ import random
 
 class Translate(commands.Cog):
 
-    @commands.command(name="norse")
+    @commands.command(name="norse", brief="View a random Old Norse word", help="View a random Old Norse word")
     async def norse(self, ctx):
         with open('data/oldNorseToEnglish.json', encoding='utf-8') as norse_file:
             norse_dict = json.load(norse_file)

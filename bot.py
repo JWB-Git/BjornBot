@@ -1,4 +1,6 @@
 from discord.ext import commands
+from discord import Color
+from pretty_help import PrettyHelp
 
 from cogs import basic_cog, translate_cog, birthday_cog
 
@@ -22,7 +24,7 @@ load_dotenv()
 class Bjorn(commands.Bot):
 
     def __init__(self):
-        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True)
+        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True, help_command=PrettyHelp(color=Color.purple(), show_index=False))
 
         # Set up Firebase Database
         # Currently disabled as not needed due to disabled birthday feature
