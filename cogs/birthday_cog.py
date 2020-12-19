@@ -75,8 +75,8 @@ def generate_embed(birthday):
     embed.add_field(name="Birth date", value=dateVal, inline=True)
     embed.add_field(name="Current Age", value=age, inline=True)
     embed.add_field(name="Who", value=description, inline=False)
-    embed.set_footer(text="Viking Rally 2021 - 19th to 21st November 2021 @ Moorhouse Adventure Centre, Durham",
-                     icon_url="https://scontent-lht6-1.xx.fbcdn.net/v/t1.0-9/p960x960/126024485_189553636113350_3374549951797900365_o.png?_nc_cat=106&ccb=2&_nc_sid=85a577&_nc_ohc=AHTAX0o4YIAAX-xICmR&_nc_ht=scontent-lht6-1.xx&oh=708c1ec3789fb4ee98886e9d6cc0a998&oe=5FDC9301")
+    embed.set_footer(text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
+                     icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
 
     return embed
 

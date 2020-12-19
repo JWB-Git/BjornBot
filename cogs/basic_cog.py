@@ -53,7 +53,8 @@ class Basic(commands.Cog):
 
         embed.add_field(name="Developed by", value="Jack Burgess and Tim Rodaway", inline=False)
         embed.add_field(name="Repo", value="Click on link in the title!", inline=False)
-
+        embed.set_footer(text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
+                         icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
         await ctx.send(embed=embed)
 
     @commands.Cog.listener()

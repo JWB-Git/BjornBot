@@ -7,7 +7,7 @@ import time
 
 class Catch(commands.Cog):
 
-    @commands.command(name='catch', breif="Play catch", help="Play catch with me")
+    @commands.command(name='catch', brief="Play catch", help="Play catch with me")
     async def catch(self, ctx):
         choice = random.choices([0, 1, 2], weights=[0.25, 0.25, 0.5], k=1)[0]
         if choice == 0:

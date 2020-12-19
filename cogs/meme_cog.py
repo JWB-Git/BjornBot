@@ -34,7 +34,7 @@ class Meme(commands.Cog):
                                 channel = self.bot.get_channel(689401725005725709)  # SSAGO meme channel
                                 await channel.send(file=discord.File(data, os.path.basename(attachment.url)))
 
-    @commands.command(name="meme", aliases=["vikingmeme"], breif="Get a Viking themed meme",
+    @commands.command(name="meme", aliases=["vikingmeme"], brief="Get a Viking themed meme",
                       help="I'll post a meme from r/VikingMemes")
     async def meme(self, ctx):
         await ctx.message.add_reaction("<viking:779801546002661447>")
