@@ -11,6 +11,7 @@ import logging
 
 # import pyrebase  # Currently disabled as not needed due to disabled birthday feature
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Set up error logger
 logger = logging.getLogger('Discord')
