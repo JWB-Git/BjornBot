@@ -16,7 +16,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Set up error logger
 logger = logging.getLogger('Discord')
 logger.setLevel(logging.ERROR)
-handler = logging.FileHandler(filename='discord_bjorn.log', encoding='utf-8', mode='a')
+handler = logging.FileHandler(filename=os.path.join(os.curdir, 'discord.log'), encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
@@ -56,6 +56,11 @@ class Bjorn(commands.Bot):
             await ctx.send('Å nei!, somethings gone wrong here. You\'ve either encountered a bug or the command you entered dosen\'t exist! I\'ve sent more info about what\'s gone wrong to my developers so they can work this out')
 
         logger.error(exception)
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.get_user(689579955012632586).send(f"{os.path.abspath(os.curdir)}")
+
 
 # Load discord token from .env file
 TOKEN = os.getenv('DISCORD_TOKEN')
