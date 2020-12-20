@@ -2,4 +2,5 @@
 .idea
 /venv/
 discord.log
+discord_bjorn.log
 /__pycache__/

@@ -15,7 +15,7 @@ import logging
 # Set up error logger
 logger = logging.getLogger('Discord')
 logger.setLevel(logging.ERROR)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='a')
+handler = logging.FileHandler(filename='discord_bjorn.log', encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
