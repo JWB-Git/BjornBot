@@ -24,6 +24,6 @@ class Catch(commands.Cog):
                     break
                 catcher = catchers[str(random.choice(range(len(catchers))))]
             await ctx.send(f"{ctx.author.mention}, I don't have a spare hand to catch with, but I was able to bounce it"
-                           f" off my shield over to <@{catcher['bot_id']}> ...")
+                           f" off my shield over to <@{catcher['id']}> ...")
             if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
                 await ctx.send(f"{catcher['action']}")

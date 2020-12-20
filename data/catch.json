@@ -26,5 +26,11 @@
     "name": "Sally the Seahorse",
     "id": "693216082567233667",
     "action": "<@693216082567233667> catch"
+  },
+  "6": {
+    "name": "BorisBanana",
+    "id": "786014558182965278",
+    "action": "Boris catch"
   }
+}
 }
