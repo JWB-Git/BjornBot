@@ -2,3 +2,4 @@
 .idea
 /venv/
 discord.log
+/__pycache__/
