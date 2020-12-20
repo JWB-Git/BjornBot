@@ -6,7 +6,7 @@ import random
 
 class FamousVikings(commands.Cog):
 
-    @commands.command(name="famous", aliases=["famousviking, viking"], brief="Find out about a famous Viking",
+    @commands.command(name="famous", aliases=["famousviking", "viking"], brief="Find out about a famous Viking",
                       help="I'll post about a famous Viking, including a short bio and image")
     async def famous(self, ctx):
         try:
@@ -14,7 +14,7 @@ class FamousVikings(commands.Cog):
                 vikings = json.load(file)
             viking = vikings[str(random.choice(range(len(vikings))))]
             embed = discord.Embed(title=viking["name"], description="A famous Viking",
-                                  colour=discord.Colour.from_rgb(44, 4, 67), url=viking['wiki'])
+                                  colour=discord.Colour.from_rgb(113, 9, 170), url=viking['wiki'])
             if viking["image"] != "":
                 embed.set_thumbnail(url=viking["image"])
             embed.add_field(name="About", value=viking["info"], inline=False)

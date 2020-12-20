@@ -43,11 +43,11 @@ class Meme(commands.Cog):
         reddit_secret = os.getenv("REDDIT_SECRET")
         reddit_useragent = os.getenv("REDDIT_USERAGENT")
         reddit = praw.Reddit(client_id=reddit_id, client_secret=reddit_secret, user_agent=reddit_useragent)
-        post_to_pick = random.randint(1, len(list(reddit.subreddit('vikingmemes').hot())))
+        post_to_pick = random.randint(1, len([p for p in reddit.subreddit('vikingmemes').hot() if not p.is_self]))
         posts = reddit.subreddit('vikingmemes').hot()
         submission = None
         for i in range(0, post_to_pick):
-            submission = next(post for post in posts if not post.stickied)
+            submission = next(post for post in posts if not post.is_self)
         async with aiohttp.ClientSession() as session:
             async with session.get(submission.url) as resp:
                 if resp.status != 200:
