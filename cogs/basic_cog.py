@@ -74,6 +74,10 @@ class Basic(commands.Cog):
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
         elif "i'm" in message.content.lower():
 
+            # Prevents those on the Viking Rally committee from being subject to the joke
+            if message.guild.get_role(699975448263786558) in message.author.roles:
+                return
+
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
             if randint(0, 3) == 0:
                 im = message.content[message.content.lower().index("i'm") + 3:len(message.content)]
@@ -81,7 +85,6 @@ class Basic(commands.Cog):
                 await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
                 await self.info(message.channel)
 
-
-
-
-
+    @commands.command(name='ping')
+    async def ping(self, ctx):
+        await ctx.send("pong")

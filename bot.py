@@ -27,7 +27,8 @@ class Bjorn(commands.Bot):
 
     def __init__(self):
         intents = discord.Intents.all()
-        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive = True, help_command=PrettyHelp(color=Color.purple(), show_index=False), intents=intents)
+        commands.Bot.__init__(self, command_prefix=commands.when_mentioned_or("Bjørn "), case_insensitive=True,
+                              help_command=PrettyHelp(color=Color.purple(), show_index=False), intents=intents)
 
         # Set up Firebase Database
         # Currently disabled as not needed due to disabled birthday feature
@@ -50,10 +51,14 @@ class Bjorn(commands.Bot):
 
     # Error Handling (In the loosest sense of the word). Errors get sent to log
     async def on_command_error(self, ctx, exception):
-        if isinstance(exception, commands.errors.MissingRequiredArgument):  # Specific error capture for missing argument requirement
-            await ctx.send('Å nei!, You\'ve missed a required argument for this command! This command will have its own help argument, so type it again with help before it!')
+        if isinstance(exception, commands.errors.MissingRequiredArgument):  # Capture for missing argument error
+            await ctx.send('Å nei!, You\'ve missed a required argument for this command! This command will have its own'
+                           ' help argument, so type it again with help before it!')
         else:
-            await ctx.send('Å nei!, somethings gone wrong here. You\'ve either encountered a bug or the command you entered dosen\'t exist! I\'ve sent more info about what\'s gone wrong to my developers so they can work this out')
+            await ctx.send('Å nei!, somethings gone wrong here. You\'ve either encountered a bug or the command you'
+                           ' entered dosen\'t exist! I\'ve sent more info about what\'s gone wrong to my developers so'
+                           ' they can work this out')
+        await self.get_user(689579955012632586).send(f'%(asctime)s:%(levelname)s:%(name)s: %(message)s')
 
         logger.error(exception)
 
