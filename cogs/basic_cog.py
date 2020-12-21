@@ -67,22 +67,28 @@ class Basic(commands.Cog):
     async def on_message(self, message):
         # Viking Rally Emoji React
         if "viking" in message.content.lower():
-            emoji = '<:viking:779801546002661447>'
-            await message.add_reaction(emoji)
+            await message.add_reaction('<:viking:779801546002661447>')
+
+        # Added a Viking Rally react and Meme Spork react to any memes the Viking Rally committee post
+        if (message.channel.id == 689401725005725709) and \
+                (message.guild.get_role(699975448263786558) in message.author.roles) and (len(message.attachments) > 0):
+            await message.add_reaction('<:viking:779801546002661447>')
+            await message.add_reaction('<memespork:770733860308516924>')
 
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
-        elif "i'm" in message.content.lower():
-
-            # Prevents those on the Viking Rally committee from being subject to the joke
-            if message.guild.get_role(699975448263786558) in message.author.roles:
-                return
+        if "i'm" in message.content.lower():
 
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
             if randint(0, 3) == 0:
                 im = message.content[message.content.lower().index("i'm") + 3:len(message.content)]
 
                 await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+
+                if message.guild.get_role(699975448263786558) in message.author.roles:
+                    await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
+                                               "like the present for some promotion.")
+
                 await self.info(message.channel)
 
     @commands.command(name='ping')
