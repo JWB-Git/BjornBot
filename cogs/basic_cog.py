@@ -7,6 +7,8 @@ from math import floor
 
 from random import randint
 
+import json
+
 
 class Basic(commands.Cog):
 
@@ -62,6 +64,22 @@ class Basic(commands.Cog):
         embed.set_footer(text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
                          icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
         await ctx.send(embed=embed)
+
+    @commands.command(name='steal', brief="Try to steal me!", help="Try to steal me!")
+    async def steal(self, ctx):
+        with open("data/steal_statements.json", "r") as jsonFile:
+            data = json.load(jsonFile)
+
+        index = randint(0, len(data['statements']) - 1)
+
+        if index == 0:
+            data['currentCaptures'] = data['currentCaptures'] + 1
+
+            with open("data/steal_statements.json", "w") as jsonFile:
+                json.dump(data, jsonFile)
+
+        await ctx.send(data['statements'][index])
+        await ctx.send(f'I have been stolen {data["currentCaptures"]} times')
 
     @commands.Cog.listener()
     async def on_message(self, message):
