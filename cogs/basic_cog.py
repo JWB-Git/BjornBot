@@ -70,16 +70,22 @@ class Basic(commands.Cog):
         with open("data/steal_statements.json", "r") as jsonFile:
             data = json.load(jsonFile)
 
+        with open("data/counters.json", "r") as jsonFile:
+            counters = json.load(jsonFile)
+
+        steal_counter = counters['steal']
+
         index = randint(0, len(data['statements']) - 1)
 
         if index == 0:
-            data['currentCaptures'] = data['currentCaptures'] + 1
+            steal_counter = steal_counter + 1
+            counters['steal'] = steal_counter
 
-            with open("data/steal_statements.json", "w") as jsonFile:
-                json.dump(data, jsonFile)
+            with open("data/counters.json", "w") as jsonFile:
+                json.dump(counters, jsonFile)
 
         await ctx.send(data['statements'][index])
-        await ctx.send(f'I have been stolen {data["currentCaptures"]} times')
+        await ctx.send(f'I have been stolen {steal_counter} times')
 
     @commands.Cog.listener()
     async def on_message(self, message):
