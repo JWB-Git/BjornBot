@@ -8,6 +8,8 @@ from pretty_help import PrettyHelp
 import os
 from dotenv import load_dotenv
 import logging
+import traceback
+import socket
 
 # import pyrebase  # Currently disabled as not needed due to disabled birthday feature
 
@@ -58,13 +60,42 @@ class Bjorn(commands.Bot):
             await ctx.send('Å nei!, somethings gone wrong here. You\'ve either encountered a bug or the command you'
                            ' entered dosen\'t exist! I\'ve sent more info about what\'s gone wrong to my developers so'
                            ' they can work this out')
-        await self.get_user(689579955012632586).send(f'%(asctime)s:%(levelname)s:%(name)s: %(message)s')
+
+            embed = discord.Embed(title="Error", description="Something's gone wrong...",
+                                  colour=discord.Colour.from_rgb(113, 9, 170), url=ctx.message.jump_url)
+            embed.add_field(name="Instance Hostname", value=socket.gethostname(), inline=False)
+            embed.add_field(name="Author", value=f"{ctx.author.name}::{ctx.author.id}", inline=False)
+            if ctx.guild:
+                embed.add_field(name="Guild", value=f"{ctx.guild.name}::{ctx.guild.id}", inline=False)
+                embed.add_field(name="Channel", value=f"{ctx.message.channel.name}::{ctx.message.channel.id}",
+                                inline=False)
+            else:
+                embed.add_field(name="DM Channel", value=f"{ctx.channel.recipient}::{ctx.channel.id}", inline=False)
+            embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
+            embed.add_field(name="Exception", value=exception, inline=False)
+            embed.add_field(name="Traceback", value="To follow...", inline=False)
+            tb = "".join(traceback.format_exception(etype=type(exception), value=exception, tb=exception.__traceback__))
+
+            await self.dev_send(embed=embed)
+            await self.dev_send(f"```Python\n{tb}```")
 
         logger.error(exception)
 
+    # Sends to appropriate developer or general channel, depending on which instance is running
+    async def dev_send(self, content=None, *, tts=False, embed=None, file=None, files=None, delete_after=None,
+                       nonce=None, allowed_mentions=None):
+        if socket.gethostname() == os.getenv("HOSTNAME_TIM"):
+            channel = self.get_user(int(os.getenv("DISCORD_ID_TIM")))
+        elif socket.gethostname() == os.getenv("HOSTNAME_JACK"):
+            channel = self.get_user(int(os.getenv("DISCORD_ID_JACK")))
+        else:
+            channel = self.get_channel(int(os.getenv("DISCORD_BJORN_CHANNEL")))
+        await channel.send(content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after,
+                           nonce=nonce, allowed_mentions=allowed_mentions)
+
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.get_user(689579955012632586).send(f"{os.path.abspath(os.curdir)}")
+        await self.dev_send("[INFO] Hello, I'm back! :wave:")
 
 
 # Load discord token from .env file
