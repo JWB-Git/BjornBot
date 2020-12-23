@@ -116,7 +116,7 @@ class Basic(commands.Cog):
                 return
 
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
-            if randint(0, 3) == 0:
+            if (randint(0, 3) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN"))):
                 im = message.content[message.content.lower().index("i'm") + 3:len(message.content)]
 
                 await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
