@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour
+from discord import Embed, Colour, ChannelType
 
 from datetime import datetime
 
@@ -8,9 +8,13 @@ from math import floor
 from random import randint
 
 import json
+import os
 
 
 class Basic(commands.Cog):
+
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(name='hello', aliases=['hi', 'hej', 'hei', 'halla' 'hallo', 'whyaye', 'why'],
                       brief="Say Hello to Bjorn", help="Say Hello to Bjorn")
@@ -70,8 +74,11 @@ class Basic(commands.Cog):
         with open("data/steal_statements.json", "r") as jsonFile:
             data = json.load(jsonFile)
 
-        with open("data/counters.json", "r") as jsonFile:
-            counters = json.load(jsonFile)
+        if not os.path.exists("data/counters.json"):
+            counters = {"steal": 0}
+        else:
+            with open("data/counters.json", "r") as jsonFile:
+                counters = json.load(jsonFile)
 
         steal_counter = counters['steal']
 
@@ -102,6 +109,11 @@ class Basic(commands.Cog):
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
         if "i'm" in message.content.lower():
+
+            # prevents dad jokes in DMs or error logging channel to keep it neat
+            if (message.channel.type is ChannelType.private) or \
+                    (message.channel.id == int(os.getenv("DISCORD_BJORN_CHANNEL"))):
+                return
 
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
             if randint(0, 3) == 0:

@@ -44,7 +44,7 @@ class Bjorn(commands.Bot):
         # database = firebase.database()
 
         # Add cogs here
-        self.add_cog(basic_cog.Basic())
+        self.add_cog(basic_cog.Basic(self))
         self.add_cog(translate_cog.Translate())
         self.add_cog(catch_cog.Catch())
         self.add_cog(famous_vikings_cog.FamousVikings())
@@ -63,6 +63,7 @@ class Bjorn(commands.Bot):
 
             embed = discord.Embed(title="Error", description="Something's gone wrong...",
                                   colour=discord.Colour.from_rgb(113, 9, 170), url=ctx.message.jump_url)
+            embed.set_thumbnail(url="https://cdn.icon-icons.com/icons2/1380/PNG/512/vcsconflicting_93497.png")
             embed.add_field(name="Instance Hostname", value=socket.gethostname(), inline=False)
             embed.add_field(name="Author", value=f"{ctx.author.name}::{ctx.author.id}", inline=False)
             if ctx.guild:
@@ -74,6 +75,8 @@ class Bjorn(commands.Bot):
             embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
             embed.add_field(name="Exception", value=exception, inline=False)
             embed.add_field(name="Traceback", value="To follow...", inline=False)
+            embed.set_footer(text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
+                             icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
             tb = "".join(traceback.format_exception(etype=type(exception), value=exception, tb=exception.__traceback__))
 
             await self.dev_send(embed=embed)
