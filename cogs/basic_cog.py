@@ -101,7 +101,7 @@ class Basic(commands.Cog):
 
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
-        if "i'm" in message.content.lower():
+        if "i'm" in message.content.lower() and not message.author.bot:
 
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
             if randint(0, 3) == 0:
