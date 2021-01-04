@@ -51,6 +51,11 @@ class Bjorn(commands.Bot):
         self.add_cog(meme_cog.Meme(self))
         # self.add_cog(birthday_cog.Birthday(database))  # Currently Disabled due to poor design
 
+    # over-rides the default to allow commands to be triggered by other bots
+    async def process_commands(self, message):
+        ctx = await self.get_context(message)
+        await self.invoke(ctx)
+
     # Error Handling (In the loosest sense of the word). Errors get sent to log
     async def on_command_error(self, ctx, exception):
         if isinstance(exception, commands.errors.MissingRequiredArgument):  # Capture for missing argument error
