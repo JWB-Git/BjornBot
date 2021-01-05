@@ -24,22 +24,33 @@ class Leaderboards(commands.Cog):
             if ctx.channel in channels:
                 channel = ctx.channel
             else:
-                raise commands.MissingRequiredArgument(f"My simple leaderboard only works in {channels[0].mention} and {channels[1].mention}")
+                raise commands.MissingRequiredArgument(f"My simple leaderboard only works in {channels[0].mention} and "
+                                                       f"{channels[1].mention}")
 
             timeframe = "month"
             board_type = "individual"
             top = 5
             bot = "neither"
 
-    @leaderboard.command(name="advanced", brief="Advanced version of the leaderboard", help="Use various options to customise the leaderboard to your liking")
+    @leaderboard.command(name="advanced", brief="Advanced version of the leaderboard",
+                         help="Use various options to customise the leaderboard to your liking")
     async def advanced(self, ctx):
         embed = discord.Embed(title="Let's get this leaderboard made...")
         embed.set_footer(text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
                          icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
-        msg = await ctx.send(embed=embed)
+        message = await ctx.send(embed=embed)
+        channel = await self.get_leaderboard_channel(message)
+        if channel is not None:
+            timeframe = await self.get_leaderboard_timeframe(message)
+            if timeframe is not None:
+                board_type = await self.get_leaderboard_type(message)
+                if board_type is not None:
+                    top = await self.get_leaderboard_top(message)
+                    if top is not None:
+                        bot = self.get_leaderboard_bot(message)
         # return
 
-        async def get_leaderboard_channel():
+        async def get_leaderboard_channel(msg):
             embed.add_field(name="Please choose what you'd like a leaderboard for",
                             value=":one: Memes\n:two: Quotes")
             field_index = len(embed.fields) - 1
@@ -73,7 +84,7 @@ class Leaderboards(commands.Cog):
                     msg.edit(embed=embed)
                     return self.bot.get_channel(os.getenv("DISCORD_CHANNEL_QUOTES"))
 
-        async def get_leaderboard_timeframe():
+        async def get_leaderboard_timeframe(msg):
             embed.add_field(name="Please choose the timeframe for your leaderboard",
                             value=":one: Current month\n:two: All time")
             field_index = len(embed.fields) - 1
@@ -105,7 +116,7 @@ class Leaderboards(commands.Cog):
                     msg.edit(embed=embed)
                     return "all"
 
-        async def get_leaderboard_type():
+        async def get_leaderboard_type(msg):
             embed.add_field(name="Please choose the couting method for your leaderboard",
                             value=":one: Individual\n:two: Cumulative")
             field_index = len(embed.fields) - 1
@@ -131,7 +142,7 @@ class Leaderboards(commands.Cog):
                 elif str(reaction) == ":two:":
                     return "cumulative"
 
-        async def get_leaderboard_top():
+        async def get_leaderboard_top(msg):
             msg.edit(content="Please choose the top X submissions you'd like to have displayed:\n:one:-:keycap_ten: are simply their numerical values\n:infinity: shows all that have a least one vote")
             options = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "keycap_ten": 10, "infinity": 0}
             for i in options.keys():
@@ -149,7 +160,7 @@ class Leaderboards(commands.Cog):
                 return options[str(reaction)]
 
 
-        async def get_leaderboard_bot():
+        async def get_leaderboard_bot(msg):
             msg.edit(content="Please choose if you would like submissions from bots and/or Tom Webster included:\n:one: No to both\n:two: Yes to bots, no to Tom\n:three: No to bots, yes to Tom\n:four: Yes to both")
             await msg.add_reaction(":one:")
             await msg.add_reaction(":two:")
@@ -174,15 +185,15 @@ class Leaderboards(commands.Cog):
                 elif str(reaction) == ":four:":
                     return "both"
 
-    channel = await get_leaderboard_channel()
+    channel = await self.get_leaderboard_channel(message)
     if channel is not None and advanced:
-        timeframe = await get_leaderboard_timeframe()
+        timeframe = await get_leaderboard_timeframe(message)
         if timeframe is not None:
-            board_type = await get_leaderboard_type()
+            board_type = await get_leaderboard_type(message)
             if board_type is not None:
-                top = await get_leaderboard_top()
+                top = await get_leaderboard_top(message)
                 if top is not None:
-                    bot = get_leaderboard_bot()
+                    bot = get_leaderboard_bot(message)
     elif not advanced:
         timeframe = "month"
         board_type = "individual"
