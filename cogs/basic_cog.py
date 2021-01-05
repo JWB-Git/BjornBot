@@ -94,6 +94,10 @@ class Basic(commands.Cog):
         await ctx.send(data['statements'][index])
         await ctx.send(f'I have been stolen {steal_counter} times')
 
+    @commands.command(name='ping')
+    async def ping(self, ctx):
+        await ctx.send("pong")
+
     @commands.Cog.listener()
     async def on_message(self, message):
         # Viking Rally Emoji React
@@ -126,7 +130,3 @@ class Basic(commands.Cog):
                                                "like the present for some promotion.")
 
                 await self.info(message.channel)
-
-    @commands.command(name='ping')
-    async def ping(self, ctx):
-        await ctx.send("pong")
