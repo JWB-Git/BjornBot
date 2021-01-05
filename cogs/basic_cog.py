@@ -9,6 +9,9 @@ from random import randint
 
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Basic(commands.Cog):
@@ -97,6 +100,11 @@ class Basic(commands.Cog):
     @commands.command(name='ping')
     async def ping(self, ctx):
         await ctx.send("pong")
+
+    @commands.command(name="say")
+    @commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY")))
+    async def say(self, ctx, *, arg: str):
+        await ctx.send(arg)
 
     @commands.Cog.listener()
     async def on_message(self, message):
