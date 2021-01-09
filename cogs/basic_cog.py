@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour, ChannelType
+from discord import Embed, Colour, ChannelType, File
 
 from datetime import datetime
 
@@ -10,6 +10,10 @@ from random import randint
 import json
 import os
 from dotenv import load_dotenv
+
+import random
+import giphy_client
+from giphy_client.rest import ApiException
 
 load_dotenv()
 
@@ -138,3 +142,18 @@ class Basic(commands.Cog):
                                                "like the present for some promotion.")
 
                 await self.info(message.channel)
+
+                # torments Nathan
+                if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
+                    nathan = self.bot.get_user(int(os.getenv("DISCORD_ID_NATHAN")))
+                    try:
+                        query = "mwahahaha"
+                        gifs = giphy_client.DefaultApi().gifs_search_get(os.getenv("GIPHY_TOKEN"), query, limit=10,
+                                                                         rating='g')
+                        lst = list(gifs.data)
+                        gif = random.choices(lst)[0].url
+                        await nathan.send(gif)
+                        await nathan.send(file=File("GIPHY.gif"))
+                    except ApiException as e:
+                        return f"Exception when calling DefaultApi->gifs_search_get: {e}\n"
+

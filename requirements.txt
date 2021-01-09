@@ -4,3 +4,4 @@ aiohttp~=3.6.3
 praw~=7.1.0
 pyrebase4~=4.4.1
 discord-pretty-help~=1.2.0
+giphy_client~=1.0.0
