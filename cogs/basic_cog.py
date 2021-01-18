@@ -157,3 +157,8 @@ class Basic(commands.Cog):
                     except ApiException as e:
                         return f"Exception when calling DefaultApi->gifs_search_get: {e}\n"
 
+        # For the lols
+        if message.author.id == 433626538316136448:  # Jess
+            await message.add_reaction("<:crab:>")
+            if randint(1, 5) == 1:  # 1 in 5 times
+                await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
