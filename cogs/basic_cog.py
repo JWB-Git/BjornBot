@@ -132,7 +132,8 @@ class Basic(commands.Cog):
                 return
 
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
-            if (randint(0, 3) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN"))):
+            if ((randint(0, 9) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and not \
+                    (message.channel.category_id == 801588501841051689):
                 im = message.content[message.content.lower().index("i'm") + 3:len(message.content)]
 
                 await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
@@ -159,6 +160,6 @@ class Basic(commands.Cog):
 
         # For the lols
         if message.author.id == 433626538316136448:  # Jess
-            await message.add_reaction("<:crab:>")
+            await message.add_reaction(":crab:")
             if randint(1, 5) == 1:  # 1 in 5 times
                 await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
