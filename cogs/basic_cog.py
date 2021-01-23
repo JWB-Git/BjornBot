@@ -15,6 +15,8 @@ import random
 import giphy_client
 from giphy_client.rest import ApiException
 
+import re
+
 load_dotenv()
 
 
@@ -50,7 +52,7 @@ class Basic(commands.Cog):
 
     @commands.command(name='info', aliases=['information', 'rally'], brief="Learn more about Viking Rally 2021",
                       help="Learn more about Viking Rally 2021")
-    async def info(self, ctx):
+    async def info(self, ctx, delete_after=None):
         embed = Embed(title="Viking Rally 2021", colour=Colour.from_rgb(113, 9, 170),
                       url="https://viking-rally.ssago.org")
         embed.set_image(url="https://viking-rally.ssago.org/img/events/236/media/Facebook%20Cover.png")
@@ -62,7 +64,7 @@ class Basic(commands.Cog):
         embed.set_footer(text="For more information about the Rally, click on 'Viking Rally 2021'",
                          icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=delete_after)
 
     @commands.command(name='dev', aliases=['devs', 'development', 'git', 'github', 'code'],
                       brief="See my developers and code!", help="See my developers and code!")
@@ -134,15 +136,22 @@ class Basic(commands.Cog):
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
             if ((randint(0, 9) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and not \
                     (message.channel.category_id == 801588501841051689):
-                im = message.content[message.content.lower().index("i'm") + 3:len(message.content)]
+                for i in range(len(message.content[message.content.lower().index("i'm") + 3:].split("."))):
+                    im = message.content[message.content.lower().index("i'm") + 3:].split(".")[i]
+                    print("*" + im + "*")
+                    if not re.compile("^\s*$").match(im):
+                        print("breaking")
+                        break
+
+                delete_after = 60
 
                 await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
 
                 if message.guild.get_role(699975448263786558) in message.author.roles:
                     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
-                                               "like the present for some promotion.")
+                                               "like the present for some promotion.", delete_after=delete_after)
 
-                await self.info(message.channel)
+                await self.info(message.channel, delete_after=delete_after)
 
                 # torments Nathan
                 if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
@@ -160,6 +169,6 @@ class Basic(commands.Cog):
 
         # For the lols
         if message.author.id == 433626538316136448:  # Jess
-            await message.add_reaction(":crab:")
+            await message.add_reaction("🦀")
             if randint(1, 5) == 1:  # 1 in 5 times
                 await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
