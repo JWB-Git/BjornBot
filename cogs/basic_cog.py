@@ -112,6 +112,16 @@ class Basic(commands.Cog):
     async def say(self, ctx, *, arg: str):
         await ctx.send(arg)
 
+    @commands.command(name="survey", brief="Pre-Raid Survey", help="Get a link to Viking Rally's Pre-Raid Survey")
+    async def survey(self, ctx):
+        if datetime.now().month == 2 and datetime.now().year == 2021:
+            await ctx.send("You can find our pre-raid survey on the Viking Rally event site, over at "
+                           "https://viking-rally.ssago.org/pages/survey. It's open til the end of the month, so please "
+                           "do fill it out! :grin:")
+        else:
+            await ctx.send("Sadly you've missed our survey, as it was only open until the end of February :cry:")
+
+
     @commands.Cog.listener()
     async def on_message(self, message):
         # Viking Rally Emoji React
@@ -145,13 +155,19 @@ class Basic(commands.Cog):
 
                 delete_after = 60
 
-                await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                if datetime.now().month == 2 and datetime.now().year == 2021:
+                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally? We have our "
+                                               f"Pre-Raid Survey live until the end of February, so please fill it in: "
+                                               f"https://viking-rally.ssago.org/pages/survey")
+                else:
+                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
 
                 if message.guild.get_role(699975448263786558) in message.author.roles:
                     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
                                                "like the present for some promotion.", delete_after=delete_after)
 
-                await self.info(message.channel, delete_after=delete_after)
+                if not (datetime.now().month == 2 and datetime.now().year == 2021):
+                    await self.info(message.channel, delete_after=delete_after)
 
                 # torments Nathan
                 if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
