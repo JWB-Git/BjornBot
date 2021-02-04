@@ -107,8 +107,17 @@ class Basic(commands.Cog):
     async def ping(self, ctx):
         await ctx.send("pong")
 
+    # adds new check for devs, useful if not on SSAGO server
+    def is_dev():
+        def predicate(ctx):
+            if ctx.author.id not in [int(os.getenv("DISCORD_ID_TIM")), int(os.getenv("DISCORD_ID_JACK"))]:
+                raise commands.errors.MissingRole()
+            return True
+        return commands.check(predicate)
+
     @commands.command(name="say")
-    @commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY")))
+    # @commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY")))
+    @commands.check_any(commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY"))), is_dev())
     async def say(self, ctx, *, arg: str):
         await ctx.send(arg)
 
