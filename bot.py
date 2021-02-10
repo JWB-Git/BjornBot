@@ -72,7 +72,7 @@ class Bjorn(commands.Bot):
                                   colour=discord.Colour.from_rgb(113, 9, 170), url=ctx.message.jump_url)
             embed.set_thumbnail(url="https://cdn.icon-icons.com/icons2/1380/PNG/512/vcsconflicting_93497.png")
             embed.add_field(name="Instance Hostname", value=socket.gethostname(), inline=False)
-            embed.add_field(name="Author", value=f"{ctx.author.name}::{ctx.author.id}", inline=False)
+            embed.add_field(name="Author", value=f"{ctx.author.display_name}::{ctx.author.id}", inline=False)
             if ctx.guild:
                 embed.add_field(name="Guild", value=f"{ctx.guild.name}::{ctx.guild.id}", inline=False)
                 embed.add_field(name="Channel", value=f"{ctx.message.channel.name}::{ctx.message.channel.id}",
@@ -108,36 +108,62 @@ class Bjorn(commands.Bot):
         await self.dev_send("[INFO] Hello, I'm back! :wave:")
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
+    async def on_raw_reaction_add(self, payload):
+        print(payload)
+
+        # checks if :x: emoji
+        if payload.emoji.name != "❌":
+            return
+
+        # check if adding reaction, opposed to removing
+        if payload.event_type != "REACTION_ADD":
+            return
+
+        channel = self.get_channel(payload.channel_id)
+        msg = await channel.fetch_message(payload.message_id)
+
+        # checks if original message was sent by Bjørn
+        if msg.author.id != int(os.getenv("DISCORD_ID_BJORN")):
+            return
+
         guild = self.get_guild(int(os.getenv("DISCORD_GUILD_SSAGO")))
         bot_trainer = guild.get_role(int(os.getenv("DISCORD_ROLE_BOTTRAINER")))
-        if reaction.message.author.id == int(os.getenv("DISCORD_ID_BJORN")) and \
-                (user.id in [int(os.getenv("DISCORD_ID_TIM")), int(os.getenv("DISCORD_ID_JACK"))] or
-                 bot_trainer in user.roles) and reaction.emoji == ":x:" and \
-                not reaction.message.channel == int(os.getenv("DISCORD_BJORN_CHANNEL")):
-            message = reaction.message
-            embed = discord.Embed(title="Info", description="Someone's deleted something I said...",
-                                  colour=discord.Colour.from_rgb(113, 9, 170), url=message.jump_url)
-            embed.set_thumbnail(url="https://cdn.icon-icons.com/icons2/2796/PNG/512/info_information_icon_178159.png")
-            embed.add_field(name="Deleter", value=f"{user.name}::{user.id}", inline=False)
-            if message.guild:
-                embed.add_field(name="Guild", value=f"{message.guild.name}::{message.guild.id}", inline=False)
-                embed.add_field(name="Channel", value=f"{message.channel.name}::{message.message.channel.id}",
-                                inline=False)
+
+        # checks if permission to remove message
+        if payload.user_id not in [int(os.getenv("DISCORD_ID_TIM")), int(os.getenv("DISCORD_ID_JACK"))]:
+            if payload.member:
+                if bot_trainer in payload.member.roles:
+                    pass
+                else:
+                    return
             else:
-                embed.add_field(name="DM Channel", value=f"{message.channel.recipient}::{message.channel.id}",
-                                inline=False)
-            embed.add_field(name="Message Content", value=message.content, inline=False)
-            embed.set_footer(
-                text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
-                icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
+                return
 
-            channel = self.get_channel(int(os.getenv("DISCORD_BJORN_CHANNEL")))
-            await channel.send(embed=embed)
+        # prevent deletion in logging channel
+        if payload.channel_id == int(os.getenv("DISCORD_BJORN_CHANNEL")):
+            return
 
-            await reaction.message.delete()
+        user = self.get_user(payload.user_id)
 
+        embed = discord.Embed(title="Info", description="Someone's deleted something I said...",
+                              colour=discord.Colour.from_rgb(113, 9, 170), url=msg.jump_url)
+        embed.set_thumbnail(url="https://cdn.icon-icons.com/icons2/2796/PNG/512/info_information_icon_178159.png")
+        embed.add_field(name="Deleter", value=f"{user.display_name}::{user.id}", inline=False)
+        if msg.guild:
+            embed.add_field(name="Guild", value=f"{msg.guild.name}::{msg.guild.id}", inline=False)
+            embed.add_field(name="Channel", value=f"{msg.channel.name}::{msg.channel.id}", inline=False)
+        else:
+            embed.add_field(name="DM Channel", value=f"{msg.channel.recipient}::{msg.channel.id}",
+                            inline=False)
+        embed.add_field(name="Message Content", value=msg.content, inline=False)
+        embed.set_footer(
+            text="Viking Rally - 19th to 21st November 2021 @ Moor House Adventure Centre, Durham",
+            icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
 
+        channel = self.get_channel(int(os.getenv("DISCORD_BJORN_CHANNEL")))
+        await channel.send(embed=embed)
+
+        await msg.delete()
 
 
 # Load discord token from .env file
