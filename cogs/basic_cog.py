@@ -198,5 +198,6 @@ class Basic(commands.Cog):
         # For the lols
         if message.author.id == 433626538316136448:  # Jess
             await message.add_reaction("🦀")
+            await message.add_reaction("<a:animated_crab:811393820322955284>")
             if randint(1, 5) == 1:  # 1 in 5 times
                 await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
