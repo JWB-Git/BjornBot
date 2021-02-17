@@ -164,7 +164,10 @@ class Basic(commands.Cog):
 
                 delete_after = 60
 
-                if datetime.now().month == 2 and datetime.now().year == 2021:
+                if message.guild.id == 800488874803331123:
+                    await message.channel.send(f"Hi{im}, I'm Bjørn!")
+
+                elif datetime.now().month == 2 and datetime.now().year == 2021:
                     await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally? We have our "
                                                f"Pre-Raid Survey live until the end of February, so please fill it in: "
                                                f"https://viking-rally.ssago.org/pages/survey")
