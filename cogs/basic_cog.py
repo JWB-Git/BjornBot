@@ -143,6 +143,12 @@ class Basic(commands.Cog):
             await message.add_reaction('<:viking:779801546002661447>')
             await message.add_reaction('<memespork:770733860308516924>')
 
+        # Axe react southampton members, we will not forget the shrimping
+        if message.guild and message.guild.get_role(692795753168634006) in message.author.roles:
+            await message.add_reaction("🐬")
+            await message.add_reaction("🪓")
+
+
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
         if "i'm" in message.content.lower() and not message.author.bot:
