@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord import Embed, Colour, ChannelType, File, Status, utils
 
-from datetime import datetime
+from datetime import datetime, date
 
 from math import floor
 
@@ -113,6 +113,7 @@ class Basic(commands.Cog):
             if ctx.author.id not in [int(os.getenv("DISCORD_ID_TIM")), int(os.getenv("DISCORD_ID_JACK"))]:
                 raise commands.errors.MissingRole()
             return True
+
         return commands.check(predicate)
 
     @commands.command(name="say")
@@ -143,10 +144,11 @@ class Basic(commands.Cog):
             await message.add_reaction('<memespork:770733860308516924>')
 
         # Axe react southampton members, we will not forget the shrimping, exempting Oli
-        if message.guild and not message.author.id == 678903558828982274 and \
-                message.guild.get_role(692795753168634006) in message.author.roles:
-            await message.add_reaction("🐬")
-            await message.add_reaction("🪓")
+        if (message.guild and not message.author.id == 678903558828982274 and message.guild.get_role(692795753168634006)
+            in message.author.roles and randint(0, (date.today() - date(2021, 2, 22)).days) == 0) \
+                or message.author.id == 150339580359475200:
+                await message.add_reaction("🐬")
+                await message.add_reaction("🪓")
 
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
