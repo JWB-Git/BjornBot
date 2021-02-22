@@ -147,8 +147,8 @@ class Basic(commands.Cog):
         if (message.guild and not message.author.id == 678903558828982274 and message.guild.get_role(692795753168634006)
             in message.author.roles and randint(0, (date.today() - date(2021, 2, 22)).days) == 0) \
                 or message.author.id == 150339580359475200:
-                await message.add_reaction("🐬")
-                await message.add_reaction("🪓")
+            await message.add_reaction("🐬")
+            await message.add_reaction("🪓")
 
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
