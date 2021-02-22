@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour, ChannelType, File
+from discord import Embed, Colour, ChannelType, File, Status, utils
 
 from datetime import datetime
 
@@ -130,7 +130,6 @@ class Basic(commands.Cog):
         else:
             await ctx.send("Sadly you've missed our survey, as it was only open until the end of February :cry:")
 
-
     @commands.Cog.listener()
     async def on_message(self, message):
         # Viking Rally Emoji React
@@ -143,7 +142,7 @@ class Basic(commands.Cog):
             await message.add_reaction('<:viking:779801546002661447>')
             await message.add_reaction('<memespork:770733860308516924>')
 
-        # Axe react southampton members, we will not forget the shrimping
+        # Axe react southampton members, we will not forget the shrimping, exempting Oli
         if message.guild and not message.author.id == 678903558828982274 and \
                 message.guild.get_role(692795753168634006) in message.author.roles:
             await message.add_reaction("🐬")
@@ -207,3 +206,10 @@ class Basic(commands.Cog):
             await message.add_reaction("<a:animated_crab:811393820322955284>")
             if randint(1, 5) == 1:  # 1 in 5 times
                 await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        # Detects if Liam from Southampton comes online
+        if before.id == 150339580359475200 and before.status == Status.offline and before.status != after.status:
+            await after.send("This is what you get for messing with the Vikings...")
+            await after.send("<:Decapitated_Phillipa:813406341749145691>")
