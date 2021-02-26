@@ -160,8 +160,9 @@ class Basic(commands.Cog):
                 return
 
             # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
-            if ((randint(0, 9) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and not \
-                    (message.channel.category_id == 801588501841051689):
+            if ((randint(0, 9) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and \
+                    message.channel.category_id not in [801588501841051689] and \
+                    message.channel.id not in [814598516311064616]:
                 for i in range(len(message.content[message.content.lower().index("i'm") + 3:].split("."))):
                     im = message.content[message.content.lower().index("i'm") + 3:].split(".")[i]
                     print("*" + im + "*")
