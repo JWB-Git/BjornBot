@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour, ChannelType, File, Status, utils
+from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel
 
 from datetime import datetime, date
 
@@ -121,6 +121,15 @@ class Basic(commands.Cog):
     @commands.check_any(commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY"))), is_dev())
     async def say(self, ctx, *, arg: str):
         await ctx.send(arg)
+
+    @commands.command(name="sayto")
+    @commands.check_any(commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY"))), is_dev())
+    async def sayto(self, ctx, channel_id: int, *, arg: str):
+        channel = self.bot.get_channel(channel_id)
+        if channel is not None:
+            await channel.send(arg)
+        else:
+            ctx.send(f"Unable to find channel with ID {channel_id}.")
 
     @commands.command(name="survey", brief="Pre-Raid Survey", help="Get a link to Viking Rally's Pre-Raid Survey")
     async def survey(self, ctx):
