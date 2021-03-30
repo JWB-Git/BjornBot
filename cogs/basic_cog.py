@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour, ChannelType, File, Status, utils
+from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors
 
 from datetime import datetime, date
 
@@ -121,6 +121,69 @@ class Basic(commands.Cog):
     @commands.check_any(commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY"))), is_dev())
     async def say(self, ctx, *, arg: str):
         await ctx.send(arg)
+
+    @commands.command(name="sayto")
+    @commands.check_any(commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY"))), is_dev())
+    async def sayto(self, ctx, channel_id: int, *, arg: str):
+        channel = self.bot.get_channel(channel_id)
+        if channel is not None:
+            try:
+                await channel.send(arg)
+            except errors.Forbidden:
+                await ctx.send(f"Unfortunately I can't send stuff to {channel.name} :cry:")
+        else:
+            ctx.send(f"Unable to find channel with ID {channel_id}.")
+
+    @commands.command(name="im")
+    @commands.check_any(commands.has_role(int(os.getenv("DISCORD_ROLE_VIKINGRALLY"))), is_dev())
+    async def im(self, ctx, channel_id: int, message_id: int):
+        channel = self.bot.get_channel(channel_id)
+        if channel is not None:
+            try:
+                message = await channel.fetch_message(message_id)
+                for i in range(len(message.content[message.content.lower().index("i'm") + 3:].split("."))):
+                    im = message.content[message.content.lower().index("i'm") + 3:].split(".")[i]
+                    print("*" + im + "*")
+                    if not re.compile("^\s*$").match(im):
+                        print("breaking")
+                        break
+
+                delete_after = 60
+
+                if datetime.now().month == 2 and datetime.now().year == 2021:
+                    await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally? We have our "
+                                               f"Pre-Raid Survey live until the end of February, so please fill it in: "
+                                               f"https://viking-rally.ssago.org/pages/survey")
+                else:
+                    await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+
+                if message.guild.id == 689381329535762446 and \
+                        message.guild.get_role(699975448263786558) in message.author.roles:
+                    await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
+                                               "like the present for some promotion.", delete_after=delete_after)
+
+                if not (datetime.now().month == 2 and datetime.now().year == 2021):
+                    await self.info(message.channel, delete_after=delete_after)
+
+                # torments Nathan
+                if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
+                    nathan = self.bot.get_user(int(os.getenv("DISCORD_ID_NATHAN")))
+                    try:
+                        query = "mwahahaha"
+                        gifs = giphy_client.DefaultApi().gifs_search_get(os.getenv("GIPHY_TOKEN"), query, limit=10,
+                                                                         rating='g')
+                        lst = list(gifs.data)
+                        gif = random.choices(lst)[0].url
+                        await nathan.send(gif)
+                        await nathan.send(file=File("GIPHY.gif"))
+                    except ApiException as e:
+                        return f"Exception when calling DefaultApi->gifs_search_get: {e}\n"
+            except errors.NotFound:
+                ctx.send(f"Unable to find message with ID {message_id}.")
+            except errors.Forbidden:
+                await ctx.send(f"Unfortunately I can't send stuff to {channel.name} :cry:")
+        else:
+            ctx.send(f"Unable to find channel with ID {channel_id}.")
 
     @commands.command(name="survey", brief="Pre-Raid Survey", help="Get a link to Viking Rally's Pre-Raid Survey")
     async def survey(self, ctx):
