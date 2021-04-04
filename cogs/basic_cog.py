@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from discord.ext import commands
 from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors
 
@@ -193,6 +195,16 @@ class Basic(commands.Cog):
                            "do fill it out! :grin:")
         else:
             await ctx.send("Sadly you've missed our survey, as it was only open until the end of February :cry:")
+
+    @commands.command(name="egg")
+    async def easter(self, ctx, *pwd):
+        if len(pwd) == 2: #All passwords are words long yes. Congratulations if you've found this clue, that's some deep digging for little info!
+            for correct in json.loads(os.getenv("EASTER_PASSWORD").encode("latin-1").decode("utf-8")):
+                if correct[0] == pwd[0] and correct[1] == pwd[1]:
+                    await ctx.author.send(f"Thank You! {correct[0]} {correct[1]} to you too! Here is your easter egg:")
+                    await ctx.author.send(os.getenv("EASTER_URL"))
+                    return
+
 
     @commands.Cog.listener()
     async def on_message(self, message):
