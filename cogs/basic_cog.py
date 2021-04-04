@@ -1,5 +1,3 @@
-# coding=utf-8
-
 from discord.ext import commands
 from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors
 
