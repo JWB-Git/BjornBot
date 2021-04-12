@@ -195,18 +195,6 @@ class Basic(commands.Cog):
         else:
             await ctx.send("Sadly you've missed our survey, as it was only open until the end of February :cry:")
 
-    @commands.command(name="egg")
-    async def easter(self, ctx, *pwd):
-        if len(pwd) == 2: #All passwords are words long yes. Congratulations if you've found this clue, that's some deep digging for little info!
-            for correct in json5.loads(os.getenv("EASTER_PASSWORD").encode("latin-1").decode("utf-8")):
-                if correct[0] == pwd[0] and correct[1] == pwd[1]:
-                    await ctx.author.send(f"Thank You! {correct[0]} {correct[1]} to you too! Here is your easter egg:")
-                    await ctx.author.send(os.getenv("EASTER_URL"))
-                    return
-
-        await ctx.author.send(f"Sorry, your message isn't correct for my egg! Remember I'm a viking and would love to speak to you in my native language!")
-
-
     @commands.Cog.listener()
     async def on_message(self, message):
         # Viking Rally Emoji React
