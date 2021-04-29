@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 
-from cogs import basic_cog, catch_cog, famous_vikings_cog, meme_cog, translate_cog, birthday_cog
+from cogs import basic_cog, catch_cog, famous_vikings_cog, meme_cog, translate_cog, birthday_cog, awards_cog
 from discord import Color
 from pretty_help import PrettyHelp
 
@@ -49,6 +49,7 @@ class Bjorn(commands.Bot):
         self.add_cog(catch_cog.Catch())
         self.add_cog(famous_vikings_cog.FamousVikings())
         self.add_cog(meme_cog.Meme(self))
+        self.add_cog(awards_cog.Awards(self))
         # self.add_cog(birthday_cog.Birthday(database))  # Currently Disabled due to poor design
 
     # over-rides the default to allow commands to be triggered by other bots
