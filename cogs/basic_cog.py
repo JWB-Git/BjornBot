@@ -224,10 +224,21 @@ class Basic(commands.Cog):
                     (message.channel.id == int(os.getenv("DISCORD_BJORN_CHANNEL"))):
                 return
 
-            # Will randomly reply to 1 in 4 I'm messages, in the hope that this is slightly less annoying!
-            if ((randint(0, 9) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and \
-                    message.channel.category_id not in [801588501841051689] and \
-                    message.channel.id not in [814598516311064616, 728194834057265193]:
+            banned_categories = [
+                801588501841051689,  # The Library
+                699975616937853009,  # Viking Rally Committee
+            ]
+
+            banned_channels = [
+                814598516311064616,  # neurodivergence
+                728194834057265193,  # lgbtq+
+                803720511552356382,  # uni-b*tch-about
+            ]
+
+
+            # Will randomly reply to 1 in 20 I'm messages
+            if ((randint(0, 19) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and \
+                    message.channel.category_id not in banned_categories and message.channel.id not in banned_channels:
                 for i in range(len(message.content[message.content.lower().index("i'm") + 3:].split("."))):
                     im = message.content[message.content.lower().index("i'm") + 3:].split(".")[i]
                     print("*" + im + "*")
