@@ -224,21 +224,17 @@ class Basic(commands.Cog):
                     (message.channel.id == int(os.getenv("DISCORD_BJORN_CHANNEL"))):
                 return
 
-            banned_categories = [
-                801588501841051689,  # The Library
-                699975616937853009,  # Viking Rally Committee
-            ]
-
-            banned_channels = [
-                814598516311064616,  # neurodivergence
-                728194834057265193,  # lgbtq+
-                803720511552356382,  # uni-b*tch-about
-            ]
-
+            spam_role = utils.get(message.guild.roles, name="botspam")
+            spam_allowed = True
+            if spam_role:
+                permissions = {perm: value for (perm, value) in iter(message.channel.overwrites_for(spam_role))}
+                permission = permissions["send_messages"]
+                if permission is False:
+                    spam_allowed = False
+            print(spam_allowed)
 
             # Will randomly reply to 1 in 20 I'm messages
-            if ((randint(0, 19) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and \
-                    message.channel.category_id not in banned_categories and message.channel.id not in banned_channels:
+            if ((randint(0, 19) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and spam_allowed:
                 for i in range(len(message.content[message.content.lower().index("i'm") + 3:].split("."))):
                     im = message.content[message.content.lower().index("i'm") + 3:].split(".")[i]
                     print("*" + im + "*")
