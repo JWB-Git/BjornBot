@@ -198,8 +198,8 @@ class Basic(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         # Viking Rally Emoji React
-        if re.compile(r"(^(rally|viking|rallies)\W|\W(rally|viking|rallies)$|^(rally|viking|rallies)$)").\
-                match(message.content.lower()):
+        if re.compile(r"(^(rally|viking|rallies)\W|\W(rally|viking|rallies)$|^(rally|viking|rallies)$|\W(rally|viking|"
+                      r"rallies)\W)").match(message.content.lower()):
             await message.add_reaction('<:viking:779801546002661447>')
 
         # Added a Viking Rally react and Meme Spork react to any memes the Viking Rally committee post
