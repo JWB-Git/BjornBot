@@ -1,9 +1,7 @@
-import discord
-from discord import utils, File, Embed
+from discord import utils, Embed
 from discord.ext import commands
 
 from datetime import datetime, timedelta
-import asyncio
 
 import os
 from dotenv import load_dotenv
@@ -14,12 +12,10 @@ load_dotenv()
 awards_dict = {
     "meme": {
         "channel": 689401725005725709,
-        # "emoji": 770733860308516924,
         "emoji": 818791635071795241,
     },
     "quote": {
         "channel": 689933365645803603,
-        # "emoji": 782328811475173407,
         "emoji": 818791635529891870,
     }
 }
@@ -65,10 +61,6 @@ class Awards(commands.Cog):
             start += timedelta(hours=1)
             end += timedelta(hours=1)
 
-        print(start)
-        print(end)
-        print(emoji)
-
         messages = {}
         async for message in channel.history(after=start, before=end):
             for reaction in message.reactions:
@@ -79,15 +71,6 @@ class Awards(commands.Cog):
                             counter += 1
                     messages[message.id] = counter
         sorted_messages = {k: v for k, v in sorted(messages.items(), key=lambda item: item[1], reverse=True)}
-
-        print(len(messages))
-
-        def check(reaction, user):
-            print(user == ctx.author)
-            print(str(reaction.emoji) == "👎")
-            return user == ctx.author and str(reaction.emoji) == "👎"
-
-        allowed_mentions = discord.AllowedMentions.none()
 
         total_count = len([(k, v) for k, v in sorted_messages.items()])
         nonzero_count = len([(k, v) for k, v in sorted_messages.items() if v > 0])
@@ -108,31 +91,10 @@ class Awards(commands.Cog):
         embed.set_thumbnail(url=emoji.url)
         await ctx.send(embed=embed)
 
-        # c = 1
-        # while True:
-        #     try:
-        #         print(c - 1)
-        #         print(len(list(sorted_messages.keys())))
-        #         print(sorted_messages)
-        #         print(list(sorted_messages.keys())[c - 1])
-        #
-        #         message_id = list(sorted_messages.keys())[c - 1]
-        #         print(message_id, type(message_id))
-        #         message = await channel.fetch_message(message_id)
-        #         msg = await ctx.send(f"{message.jump_url}\n{message.author.display_name}\n{message.clean_content}",
-        #                              allowed_mentions=allowed_mentions)
-        #         for attachment in message.attachments:
-        #             await ctx.send(attachment.url)
-        #         await msg.wait_for("reaction_add", timeout=600.0, check=check)
-        #         ctx += 1
-        #     except KeyError:
-        #         await ctx.send("No more messages found")
-        #     except asyncio.TimeoutError:
-        #         break
-
+    @commands.Cog.listener()
     async def on_message(self, message):
-        guild = self.bot.get_guild(os.getenv("DISCORD_GUILD_SSAGO"))
-        if message.channel.id == awards_dict["meme"]["channel"] and len(message.attachements) != 0:
+        guild = self.bot.get_guild(int(os.getenv("DISCORD_GUILD_SSAGO")))
+        if message.channel.id == awards_dict["meme"]["channel"] and len(message.attachments) != 0:
             emoji = utils.get(guild.emojis, id=awards_dict["meme"]["emoji"])
         elif message.channel.id == awards_dict["quote"]["channel"] and len(message.mentions) != 0:
             emoji = utils.get(guild.emojis, id=awards_dict["quote"]["emoji"])
