@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors, Guild, CategoryChannel, Role, Member
+from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors, Guild, CategoryChannel, VoiceChannel, Role, Member
 
 from datetime import datetime, date
 
@@ -242,6 +242,36 @@ class Basic(commands.Cog):
         embed.set_thumbnail(url=guild.icon_url)
         embed.set_footer(text=f"{len(role.members)} members have this role")
         await ctx.send(embed=embed)
+
+    @commands.command(name="structure", brief="Show server structure",
+                      help="Shows you a list of all the channels in the server, arranged by category")
+    async def structure(self, ctx: commands.Context, *, guild: Guild):
+        if not guild:
+            guild = ctx.guild
+        d = {}
+        for category in guild.categories:
+            d[category] = []
+        for channel in guild.text_channels + guild.voice_channels:
+            d[channel.category] = list(d.get(channel.category, "")) + [channel]
+        sorted_d = {k: v for k, v in sorted(d.items(), key=lambda items: items[0].position, reverse=False)}
+        await ctx.send(f"**Structure of channels in '{guild}'**")
+        for category, channels in sorted_d.items():
+            list_of_channels = []
+            for channel in channels:
+                channel_string = ""
+                if isinstance(channel, TextChannel):
+                    channel_string += "📝"
+                    if channel.is_nsfw():
+                        channel_string += "🔞"
+                elif isinstance(channel, VoiceChannel):
+                    channel_string += "🎤"
+                else:
+                    channel_string += "❓"
+                channel_string += f": {channel.name}"
+                list_of_channels.append(channel_string)
+            channels_string = "\n".join(list_of_channels)
+            await ctx.send(f"\n\n***{category.name}***\n{channels_string}")
+        await ctx.send("*** Done ***")
 
     @commands.Cog.listener()
     async def on_message(self, message):
