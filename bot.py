@@ -62,6 +62,9 @@ class Bjorn(commands.Bot):
         if isinstance(exception, commands.errors.MissingRequiredArgument):  # Capture for missing argument error
             await ctx.send('Å nei!, You\'ve missed a required argument for this command! This command will have its own'
                            ' help argument, so type it again with help before it!')
+        elif isinstance(exception, (commands.errors.BadArgument, commands.errors.BadUnionArgument)):
+            await ctx.send('Å nei!, You\'ve entered a bad argument for this command! This command will have its own'
+                           ' help argument, so type it again with help before it!')
         elif isinstance(exception, commands.errors.MissingRole):  # Capture for the missing role error (e.g. for 'say')
             await ctx.send(f"Å nei!, You don't have the correct permissions to do that - naughty {ctx.author.mention}!")
         else:

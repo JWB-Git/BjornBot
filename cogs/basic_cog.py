@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors
+from discord import Embed, Colour, ChannelType, File, Status, utils, TextChannel, errors, Guild, CategoryChannel, Role, Member
 
 from datetime import datetime, date
 
@@ -17,6 +17,8 @@ import giphy_client
 from giphy_client.rest import ApiException
 
 import re
+
+from typing import Union
 
 load_dotenv()
 
@@ -194,6 +196,52 @@ class Basic(commands.Cog):
                            "do fill it out! :grin:")
         else:
             await ctx.send("Sadly you've missed our survey, as it was only open until the end of February :cry:")
+
+    @commands.command(name="permissions", brief="Get permissions of a channel",
+                      help="Get the permissions of a specific channel")
+    async def permissions(self, ctx: commands.Context, channel: Union[TextChannel, CategoryChannel]):
+        embed = Embed(title=f"Permission Overwrites for {channel.type} channel '{channel.name}' in '{channel.guild}'")
+        for k, v in channel.overwrites.items():
+            if isinstance(k, Role):
+                display = f"Role: {k.name}"
+            else:
+                display = f"Member: {k.display_name}"
+            embed.add_field(name=display, inline=False,
+                            value="\n".join([f"{perm}: {value}" for perm, value in iter(v) if value is not None]))
+        await ctx.send(embed=embed)
+
+    @commands.command(name="rolees", brief="All members in a role", help="Get a list of all members within a role")
+    async def rolees(self, ctx: commands.Context, role_argument: str, guild_argument=None):
+        print(role_argument)
+        print(guild_argument)
+        if guild_argument is None:
+            role = await commands.RoleConverter().convert(ctx, role_argument)
+            guild: Guild = ctx.guild
+        else:
+            guild = await commands.GuildConverter().convert(ctx, guild_argument)
+            print(type(guild))
+            match = re.match(r'([0-9]{15,21})$', role_argument) or re.match(r'<@&([0-9]+)>$', role_argument)
+            if match:
+                role = guild.get_role(int(match.group(1)))
+            else:
+                role = utils.get(guild.roles, name=role_argument)
+            if role is None:
+                raise commands.errors.RoleNotFound(role_argument)
+        embed = Embed(title=f"Holders of the role '{role}' in '{role.guild}'", colour=role.colour)
+        d = {}
+        for member in role.members:
+            top_hoist_role = guild.default_role
+            for role in member.roles[::-1]:
+                if role.hoist:
+                    top_hoist_role = role
+                    break
+            d[top_hoist_role] = list(d.get(top_hoist_role, "")) + [member]
+        sorted_d = {k: v for k, v in sorted(d.items(), key=lambda items: items[0].position, reverse=True)}
+        for k, v in sorted_d.items():
+            embed.add_field(name=k, inline=False, value="\n".join([member.display_name for member in v]))
+        embed.set_thumbnail(url=guild.icon_url)
+        embed.set_footer(text=f"{len(role.members)} members have this role")
+        await ctx.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message(self, message):
