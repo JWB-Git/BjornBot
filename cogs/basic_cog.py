@@ -176,7 +176,8 @@ class Basic(commands.Cog):
                 await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about the SSAGO EGM?")
 
                 if message.guild.id == 689381329535762446 and \
-                        message.guild.get_role(699975448263786558) in message.author.roles:
+                        message.guild.get_role(689383534208614409) in message.author.roles:  # Exec role
+                        # message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
                     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
                                                "like the present for some promotion.", delete_after=delete_after)
 
