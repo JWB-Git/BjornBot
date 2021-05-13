@@ -55,7 +55,7 @@ class Basic(commands.Cog):
 
     @commands.command(name='info', aliases=['information', 'rally'], brief="Learn more about Viking Rally 2021",
                       help="Learn more about Viking Rally 2021")
-    async def info(self, ctx, delete_after=None):
+    async def info(self, ctx, delete_after: int = None):
         embed = Embed(title="Viking Rally 2021", colour=Colour.from_rgb(113, 9, 170),
                       url="https://viking-rally.ssago.org")
         embed.set_image(url="https://viking-rally.ssago.org/img/events/236/media/Facebook%20Cover.png")
@@ -66,6 +66,25 @@ class Basic(commands.Cog):
                         value="It's the first SSAGO Rally in the North East for 21 Years!", inline=False)
         embed.set_footer(text="For more information about the Rally, click on 'Viking Rally 2021'",
                          icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
+
+        await ctx.send(embed=embed, delete_after=delete_after)
+
+    @commands.command(name='egm', brief="Learn about the EGM",
+                      help="Learn more about the Extrodenary General Meeting")
+    async def egm(self, ctx, delete_after: int = None):
+        embed = Embed(title="Extrodenary General Meeting", colour=Colour.from_rgb(0, 154, 68),
+                      url="https://vote.ssago.org/")
+        embed.set_thumbnail(url="https://www.ssago.org/img/ssago.png")
+        embed.add_field(name="When is it?", value="Sunday 18th of July 2021", inline=False)
+        embed.add_field(name="What's it for?", value="To elect a SSAGO Ball for Spring 2022, and maybe more (tbc)",
+                        inline=False)
+        embed.add_field(name="Why?", inline=False,
+                        value="The Exec have decided to hold the EGM at this time to allow sufficient time for the "
+                              "SSAGO Ball 2022 to be elected and organised. It's appreciated this is still a short "
+                              "turnaround compared to historical SSAGO Balls so it's encouraged those who may want to "
+                              "bid for a ball to think outside the box.")
+        # embed.set_footer(text="For more information about the Rally, click on 'Viking Rally 2021'",
+        #                  icon_url="https://viking-rally.ssago.org/img/events/236/media/Viking%20Rally%20Logo.png")
 
         await ctx.send(embed=embed, delete_after=delete_after)
 
@@ -153,12 +172,8 @@ class Basic(commands.Cog):
 
                 delete_after = 60
 
-                if datetime.now().month == 2 and datetime.now().year == 2021:
-                    await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally? We have our "
-                                               f"Pre-Raid Survey live until the end of February, so please fill it in: "
-                                               f"https://viking-rally.ssago.org/pages/survey")
-                else:
-                    await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                # await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about the SSAGO EGM?")
 
                 if message.guild.id == 689381329535762446 and \
                         message.guild.get_role(699975448263786558) in message.author.roles:
@@ -166,7 +181,7 @@ class Basic(commands.Cog):
                                                "like the present for some promotion.", delete_after=delete_after)
 
                 if not (datetime.now().month == 2 and datetime.now().year == 2021):
-                    await self.info(message.channel, delete_after=delete_after)
+                    await self.egm(message.channel, delete_after=delete_after)
 
                 # torments Nathan
                 if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
@@ -240,7 +255,7 @@ class Basic(commands.Cog):
         for k, v in sorted_d.items():
             embed.add_field(name=k, inline=False, value="\n".join([member.display_name for member in v]))
         embed.set_thumbnail(url=guild.icon_url)
-        embed.set_footer(text=f"{len(role.members)} members have this role")
+        embed.set_footer(text=f"{len(role.members)} members have this role\n{role.name}:{role.id}")
         await ctx.send(embed=embed)
 
     @commands.command(name="structure", brief="Show server structure",
@@ -325,19 +340,17 @@ class Basic(commands.Cog):
                 if message.guild.id == 800488874803331123:
                     await message.channel.send(f"Hi{im}, I'm Bjørn!")
 
-                elif datetime.now().month == 2 and datetime.now().year == 2021:
-                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally? We have our "
-                                               f"Pre-Raid Survey live until the end of February, so please fill it in: "
-                                               f"https://viking-rally.ssago.org/pages/survey")
                 else:
-                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                    # await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about the SSAGO EGM?")
 
-                if message.guild.get_role(699975448263786558) in message.author.roles:
+                # if message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
+                if message.guild.get_role(689383534208614409) in message.author.roles:  # Exec role
                     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
                                                "like the present for some promotion.", delete_after=delete_after)
 
                 if not (datetime.now().month == 2 and datetime.now().year == 2021):
-                    await self.info(message.channel, delete_after=delete_after)
+                    await self.egm(message.channel, delete_after=delete_after)
 
                 # torments Nathan
                 if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
