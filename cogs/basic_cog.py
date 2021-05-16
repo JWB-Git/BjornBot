@@ -215,7 +215,7 @@ class Basic(commands.Cog):
 
     @commands.command(name="permissions", brief="Get permissions of a channel",
                       help="Get the permissions of a specific channel")
-    async def permissions(self, ctx: commands.Context, channel: Union[TextChannel, CategoryChannel]):
+    async def permissions(self, ctx: commands.Context, channel: Union[TextChannel, CategoryChannel, VoiceChannel]):
         embed = Embed(title=f"Permission Overwrites for {channel.type} channel '{channel.name}' in '{channel.guild}'")
         for k, v in channel.overwrites.items():
             if isinstance(k, Role):
