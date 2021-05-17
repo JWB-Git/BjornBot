@@ -368,10 +368,13 @@ class Basic(commands.Cog):
                         return f"Exception when calling DefaultApi->gifs_search_get: {e}\n"
 
         # For the lols
-        if message.author.id == 433626538316136448:  # Jess
-            await message.add_reaction("🦀")
-            await message.add_reaction("<a:animated_crab:811393820322955284>")
-            if randint(1, 20) == 1:  # 1 in 20 times
+        if message.author.id == 433626538316136448 and randint(1, 100) == 1:  # Jess
+            chance = randint(1, 3)
+            if chance == 1:
+                await message.add_reaction("🦀")
+            elif chance == 2:
+                await message.add_reaction("<a:animated_crab:811393820322955284>")
+            else:
                 await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
 
     @commands.Cog.listener()
