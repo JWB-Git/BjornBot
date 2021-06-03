@@ -20,7 +20,7 @@ class Catch(commands.Cog):
             catcher = catchers[str(random.choice(range(len(catchers))))]
             timeout = time.time() + 10
             while time.time() < timeout:
-                if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == Status.online]:
+                if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == Status.online] and not int(catcher["id"]) == 689981551534014576:
                     break
                 catcher = catchers[str(random.choice(range(len(catchers))))]
             await ctx.send(f"{ctx.author.mention}, I don't have a spare hand to catch with, but I was able to bounce it"
