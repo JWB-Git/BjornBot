@@ -319,16 +319,21 @@ class Basic(commands.Cog):
 
                 if message.guild.id == 800488874803331123:
                     await message.channel.send(f"Hi{im}, I'm Bjørn!")
+                    
+                elif datetime.now().day <= 19 and datetime.now().month == 12 and datetime.now().year == 2021 and \
+                        if message.guild.get_role(910562759035486259) in message.author.roles:  # Viking Rally role
+                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about the Viking Rally feedback survey? "
+                                               "It's available over at https://rally.ssago.org/feedback")
 
                 else:
-                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                    await message.channel.send(f"Hi{im}, I'm Bjørn! Did you hear about Viking Rally?")
 
-                if message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
-                    await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
-                                               "like the present for some promotion.", delete_after=delete_after)
+                #if message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally Committee role
+                #    await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
+                #                               "like the present for some promotion.", delete_after=delete_after)
 
-                if not (datetime.now().month == 2 and datetime.now().year == 2021):
-                    await self.info(message.channel, delete_after=delete_after)
+                #if not (datetime.now().month == 2 and datetime.now().year == 2021):
+                #    await self.info(message.channel, delete_after=delete_after)
 
                 # torments Nathan
                 if message.author.id == int(os.getenv("DISCORD_ID_NATHAN")):
