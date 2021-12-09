@@ -321,7 +321,7 @@ class Basic(commands.Cog):
                     await message.channel.send(f"Hi{im}, I'm Bjørn!")
                     
                 elif datetime.now().day <= 19 and datetime.now().month == 12 and datetime.now().year == 2021 and \
-                        if message.guild.get_role(910562759035486259) in message.author.roles:  # Viking Rally role
+                        message.guild.get_role(910562759035486259) in message.author.roles:  # Viking Rally role
                     await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about the Viking Rally feedback survey? "
                                                "It's available over at https://rally.ssago.org/feedback")
 
