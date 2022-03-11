@@ -358,6 +358,9 @@ class Basic(commands.Cog):
                 await message.add_reaction("<a:animated_crab:811393820322955284>")
             else:
                 await message.author.send("https://music.youtube.com/watch?v=jhExvE5fvJw")  # Crab God video
+                
+        if message.author.id == 328584339208142848 and randint(0, (date.today() - date(2022, 3, 10)).days) == 0:  # Jack W
+            await message.add_reaction("🥔")
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
