@@ -153,10 +153,16 @@ class Basic(commands.Cog):
 
                 delete_after = 60
 
-                await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                # await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Rally of Games?")
 
+                # if message.guild.id == 689381329535762446 and \
+                #         message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
+                #     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
+                #                                "like the present for some promotion.", delete_after=delete_after)
+                    
                 if message.guild.id == 689381329535762446 and \
-                        message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
+                        message.guild.get_role(880590375243362405) in message.author.roles:  # Rally of Games role
                     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
                                                "like the present for some promotion.", delete_after=delete_after)
 
