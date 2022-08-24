@@ -11,6 +11,9 @@ import logging
 import traceback
 import socket
 
+import datetime
+import random
+
 # import pyrebase  # Currently disabled as not needed due to disabled birthday feature
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -51,6 +54,22 @@ class Bjorn(commands.Bot):
         self.add_cog(meme_cog.Meme(self))
         self.add_cog(awards_cog.Awards(self))
         # self.add_cog(birthday_cog.Birthday(database))  # Currently Disabled due to poor design
+        
+    async def pester(self):
+        while True:
+            dt = datetime.datetime.today().replace(hour=9, minute=0, second=0)
+            random_time = random.random() * 21600  # 6 hour window so during opening hours
+            now = datetime.datetime.now().timestamp() % 86400
+            delay = dt + random_time - now
+            if delay < 0:
+                delay += 86400
+            
+            await bot.get_user(692814402960883775).send("This is your daily reminder to please sort out the Viking Rally "
+                                                        "hoodies! 😊")
+            guild = [guild for guild in bot.guilds if guild.id == 689381329535762446][0]
+            channel = [channel for channel in guild.channels if channel.id == 699975897369018509][0]  # VR committee
+            await channel.send("<@692814402960883775> this is your daily reminder to please sort out the Viking Rally "
+                               "hoodies! 😊")
 
     # over-rides the default to allow commands to be triggered by other bots
     async def process_commands(self, message):
