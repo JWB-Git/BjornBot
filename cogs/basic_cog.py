@@ -153,16 +153,10 @@ class Basic(commands.Cog):
 
                 delete_after = 60
 
-                # await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
-                await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Rally of Games?")
+                await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
 
-                # if message.guild.id == 689381329535762446 and \
-                #         message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
-                #     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
-                #                                "like the present for some promotion.", delete_after=delete_after)
-                    
                 if message.guild.id == 689381329535762446 and \
-                        message.guild.get_role(880590375243362405) in message.author.roles:  # Rally of Games role
+                        message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
                     await message.channel.send("Oh yeah, of course you do, you're helping organise it! Anyhow, no time "
                                                "like the present for some promotion.", delete_after=delete_after)
 
@@ -296,7 +290,7 @@ class Basic(commands.Cog):
 
         # Hi <Name>, I'm Bjørn
         # Inspired by Nathan Flaherty of BUSAG, who uses this dad joke at literally every opportunity!
-        if "i'm" in message.content.lower() and not message.author.bot:
+        if "i'm" in message.content.lower() and not message.author.bot and 0 == 1:
 
             # prevents dad jokes in DMs or error logging channel to keep it neat
             if (message.channel.type is ChannelType.private) or \
@@ -325,11 +319,6 @@ class Basic(commands.Cog):
 
                 if message.guild.id == 800488874803331123:
                     await message.channel.send(f"Hi{im}, I'm Bjørn!")
-                    
-                elif datetime.now().day <= 19 and datetime.now().month == 12 and datetime.now().year == 2021 and \
-                        message.guild.get_role(910562759035486259) in message.author.roles:  # Viking Rally role
-                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you heard about the Viking Rally feedback survey? "
-                                               "It's available over at https://rally.ssago.org/feedback")
 
                 else:
                     await message.channel.send(f"Hi{im}, I'm Bjørn! Did you hear about Viking Rally?")
