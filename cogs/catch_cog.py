@@ -9,7 +9,7 @@ class Catch(commands.Cog):
 
     @commands.command(name='catch', brief="Play catch", help="Play catch with me")
     async def catch(self, ctx):
-        choice = random.choices([0, 1, 2], weights=[0.25, 0.25, 0.5], k=1)[0]
+        choice = random.choices([0, 1, 2], weights=[0.175, 0.175, 0.65], k=1)[0]
         if choice == 0:
             await ctx.send("Uh-oh! I accidentally managed to slice the ball in half with my axe")
         elif choice == 1:
