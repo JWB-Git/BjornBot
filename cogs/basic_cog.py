@@ -21,7 +21,7 @@ import re
 from typing import Union
 
 load_dotenv()
-
+world_cup_of_datetime = datetime(2025, 1, 17, 20, 51)
 
 class Basic(commands.Cog):
 
@@ -153,7 +153,10 @@ class Basic(commands.Cog):
 
                 delete_after = 60
 
-                await message.reply(f"Hi{im}, I'm Bjørn! Have you heard about Viking Rally?")
+                if datetime.now() < world_cup_of_datetime:
+                    await message.reply(f"Hi{im}, I'm Bjørn! Have you voted for Viking Rally in the SSAGO World Cup Of National Events on Instagram (@ssago_uk)?")
+                else:
+                    await message.reply(f"Hi{im}, I'm Bjørn! Did you hear about Viking Rally?")
 
                 if message.guild.id == 689381329535762446 and \
                         message.guild.get_role(699975448263786558) in message.author.roles:  # Viking Rally role
@@ -307,7 +310,7 @@ class Basic(commands.Cog):
             print(spam_allowed)
 
             # Will randomly reply to 1 in 20 I'm messages
-            if ((randint(0, 19) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN")))) and spam_allowed:
+            if ((randint(0, 19) == 0) or (message.author.id == int(os.getenv("DISCORD_ID_NATHAN"))) or datetime.now() < world_cup_of_datetime) and spam_allowed:
                 for i in range(len(message.content[message.content.lower().index("i'm") + 3:].split("."))):
                     im = message.content[message.content.lower().index("i'm") + 3:].split(".")[i]
                     print("*" + im + "*")
@@ -319,6 +322,9 @@ class Basic(commands.Cog):
 
                 if message.guild.id == 800488874803331123:
                     await message.channel.send(f"Hi{im}, I'm Bjørn!")
+
+                elif datetime.now() < world_cup_of_datetime:
+                    await message.channel.send(f"Hi{im}, I'm Bjørn! Have you voted for Viking Rally in the SSAGO World Cup Of National Events on Instagram (@ssago_uk)?")
 
                 else:
                     await message.channel.send(f"Hi{im}, I'm Bjørn! Did you hear about Viking Rally?")
